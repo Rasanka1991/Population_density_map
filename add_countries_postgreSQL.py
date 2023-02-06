@@ -1,6 +1,6 @@
 """ 
 This code adds the countries of the world stored in a GeoJson file to a new PostgreSQL Table.
-Replace the line 23 with your own Postgress SQL username,password and database (Should be a postGIS enabled database, execute ).
+Replace the line 23 with your own Postgress SQL username,password and database (Should be a PostGIS enabled database, execute ).
 
 
 The code structure is as follows,
