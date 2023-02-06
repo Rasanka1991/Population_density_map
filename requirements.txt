@@ -1,3 +1,4 @@
+ipykernel
 geoalchemy2
 geopandas
 pandas
