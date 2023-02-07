@@ -8,9 +8,9 @@
     </head>
 
     <body> 
-        <h1><center>Population Density maps of European Union Countries</center></h1>
+        <h1><center>Population Density maps of Countries in European Union</center></h1>
         <div id="the whole thing">
-            <div id="leftThing" style="float:left; width:50%;">
+            <div id="leftThing" style="float:left; width:35%;">
                 <h3>Select the country by National flag</h3>
                 <table>
                     <tr>
@@ -112,10 +112,44 @@
                 </table> 
             </div>
 
-            <div id="rightThing" style="float:right; width:50%;">
-                <h3>Select the country from map</h3> 
-                
-                
+            <div id="rightThing" style="float:right; width:65%;">
+                <h3>Select the country from the map</h3> 
+                    
+                <!-- Leafletstylesheet --> 
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" 
+                    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+                        crossorigin="">
+
+                    <!-- Leaflet JavaScript library --> 
+                    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+                    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+                    crossorigin=""></script>
+
+                    <!-- Map element --> 
+                    <div id="map" style="width: 1000px; height: 600px;"></div>
+
+                    <!-- Initialize the map --> 
+                    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+
+                    <script>
+
+                    var map = L.map('map', {
+                    center: [51.505, -0.09],
+                    zoom: 13
+                    });
+
+                    L.tileLayer('https://tile.openstreetmap.be/osmbe/{z}/{x}/{y}.png', {
+                        attribution:
+                            '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors' +
+                            ', Tiles courtesy of <a href="https://geo6.be/">GEO-6</a>',
+                        maxZoom: 18
+                    }).addTo(map);
+
+                    var marker = L.marker([50.84673, 4.35247]).addTo(map);
+                    var popup = marker.bindPopup('<b>Hello world!</b><br />I am a popup.');
+                    popup.openPopup();
+
+                </script>
 
            </div>
             
