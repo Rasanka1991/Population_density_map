@@ -10,12 +10,12 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 import pyproj
 from pyproj import CRS, Proj, transform
+import os
 
 
 
 #set correct directory
 pyproj.datadir.set_data_dir("C:\\Users\\Francisco\\miniconda3\\envs\\project-env\\Library\\share\\proj")
-
 
 #####################################################################################################################ETL PART#####################################################################################################################################
 
