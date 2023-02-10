@@ -20,15 +20,13 @@ from pyproj import CRS, Proj, transform
 pyproj.datadir.set_data_dir("C:\\Users\\Francisco\\miniconda3\\envs\\project-env\\Library\\share\\proj")
 
 
-#####################################################################################################################ETL PART#####################################################################################################################################
+#####################################################################################################################EXTRACT AND TRANSFORM DATA#####################################################################################################################################
 
-# Data aquisition (population data from the web)
+# # Data aquisition (population data from the web)
 data = pd.read_html('https://citypopulation.de/php/argentina-admin.php')[0]
 data = data.iloc[0:,:]
 
 print("#### AQUIRING DATA ####")
-
-
 
 # #select just the colums i want/need
 data = data[['Name','Status','Population Census 2022-05-18']]
@@ -64,7 +62,8 @@ for index, row in data.iterrows():
 # # Transforming the population columns into int    
 for index, row in data.iterrows():
     data.loc[index,'Pop_density'] = int(data.loc[index]['Population'])
-##############################################################################################################
+    
+######################################################################################################################################### LOAD DATA INTO DATABASE  ##############################################################################################
 print('#### CONECTING WITH THE DATA BASE ####') 
 user = "postgres"
 password = "postgres"
@@ -81,7 +80,7 @@ data.to_sql('data', conn, if_exists= 'append')
 print("#### THE CONNECTION WITH THE DATA BASE WAS ESTABLISHED ####")
 
 
-###############################################################################################################
+#################################################################################################################EXTRACT AND TRANSFORM THE SHAPEFILE ########################################################################################################
 
 # #Reading data from the shapefile
 ctry = gpd.read_file(r'C:\Users\Francisco\Documents\Nova IMS\Programing\teste\data\ARG_adm1.shp')
@@ -128,6 +127,7 @@ ctry = ctry.merge(data, on='District')
 print('#### CALCULATING THE POPULATION DENSITY ####')
 ctry['pop_density (people/sq Km)'] = ctry['Pop_density']/ctry['area']
 
+##########################################################################################################################LOAD THE SHAPEFILE INTO DATABASE#####################################################################################################
 # #Load Shapefile into the Data Base 
 
 print('#### CONECTING WITH THE DATA BASE ####') 
@@ -141,15 +141,12 @@ database = "test"
 conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
 engine = create_engine(conn)
  
-# #Read shapefile using GeoPandas
-gdf = gpd.read_file(r"C:\Users\Francisco\Documents\Nova IMS\Programing\teste\data\ARG_adm1.shp")
- 
 # #Import shapefile to databse
-gdf.to_postgis(name="shp_arg", con=engine, if_exists= 'append', schema="public")
+ctry.to_postgis(name="shp", con=engine, if_exists= 'append', schema="public")
  
 print("#### THE CONNECTION WITH THE DATA BASE WAS ESTABLISHED ####")
 
-##################################################################################################################################plot pop_density map
+#####################################################################################################PLOTING DENSITY POPULATION MAP###############################################################################################################################
 
 print('#### PLOTING A BEUTIFULL MAP JUST FOR YOU ####')
 with plt.style.context(("seaborn", "ggplot")):
