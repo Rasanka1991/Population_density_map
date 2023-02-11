@@ -13,11 +13,13 @@ import pyproj
 import psycopg2
 from sqlalchemy import create_engine
 from pyproj import CRS, Proj, transform
+import os
 
+cw = os.getcwd()
 
 
 #set correct directory
-pyproj.datadir.set_data_dir("C:\\Users\\Francisco\\miniconda3\\envs\\project-env\\Library\\share\\proj")
+#pyproj.datadir.set_data_dir("C:\\Users\\Francisco\\miniconda3\\envs\\project-env\\Library\\share\\proj")
 
 
 #####################################################################################################################EXTRACT AND TRANSFORM DATA#####################################################################################################################################
@@ -83,7 +85,9 @@ print("#### THE CONNECTION WITH THE DATA BASE WAS ESTABLISHED ####")
 #################################################################################################################EXTRACT AND TRANSFORM THE SHAPEFILE ########################################################################################################
 
 # #Reading data from the shapefile
-ctry = gpd.read_file(r'C:\Users\Francisco\Documents\Nova IMS\Programing\teste\data\ARG_adm1.shp')
+shp_loc= os.path.join(cw, 'static','data','data')
+ctry = gpd.read_file(os.path.join(shp_loc,'ARG_adm1.shp'))
+
 
 print('#### READING SHAPEFILE ####')
     

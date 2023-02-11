@@ -6,3 +6,4 @@ pyproj
 flask
 SQLAlchemy
 psycopg2
+lxml
