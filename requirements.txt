@@ -3,3 +3,6 @@ geoalchemy2
 geopandas
 pandas
 pyproj
+flask
+SQLAlchemy
+psycopg2

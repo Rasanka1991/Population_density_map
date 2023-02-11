@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request, redirect
-from flask_sqlalchemy import SQLAlchemy
+#from flask_sqlalchemy import SQLAlchemy
 import psycopg2 
 import osgeo.ogr
 import pandas as pd
