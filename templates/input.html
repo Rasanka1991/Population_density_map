@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Leafletstylesheet --> 
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" 
+        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+        crossorigin="">
+
+        <!-- Leaflet JavaScript library --> 
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+        <script src="{{statics_folder}}/src/leaflet.ajax.min.js"></script>
+
+        <script src="{{statics_folder}}/data/europe.js"></script>
+        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+
+        <style>
+            #map{
+                height: 100vh;
+                width: 100%;
+            }
+    
+            .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255,255,255,0.8);
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        border-radius: 5px;
+    }</style>
+
+        
+
+        <title>Population Density</title>
+
+    </head>
+    
+
+    <body> 
+        <h1><center>Population Density maps of Countries in European Union</center></h1>
+        <div id="the whole thing">
+            
+            <div id="leftThing" style="float:left; width:35%;">
+
+                <h3>Select the country by National flag</h3>
+                
+                <input type="text" id="text" style="width:500px"/>
+
+                <table>
+                    <tr>
+                        <th>Austria</th>
+                        <th>Belgium</th>
+                        <th>Bulgaria</th>
+                        <th>Croatia</th>
+                    </tr>
+                    <tr>
+                        <td><a href="javascript: changeText(1);"></a><img src="{{statics_folder}}/images/Austria.jpg" width="120" height="80" alt="Austria"></a></td>
+                        <td><img src="{{statics_folder}}/images/Belgium.jpg" width="120" height="80" alt="Belgium"> </td>
+                        <td><img src="{{statics_folder}}/images/Bulgaria.jpg" width="120" height="80" alt="Bulgaria"></td>
+                        <td><img src="{{statics_folder}}/images/Croatia.jpg" width="120" height="80" alt="Croatia"> </td>
+                    </tr>    
+                </table>
+                <table>
+                    <tr>
+                        <th>Cyprus</th>
+                        <th>Czech Republic</th>
+                        <th>Denmark</th>
+                        <th>Estonia</th>
+                    </tr>
+                    <tr>
+                        <td><img src="{{statics_folder}}/images/Cyprus.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Czech_Republic.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Denmark.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Estonia.jpg" width="120" height="80">  </td>
+                    </tr>
+                </table> 
+                <table>
+                    <tr>
+                        <th>Finland</th>
+                        <th>France</th>
+                        <th>Germany</th>
+                        <th>Greece</th>
+                    </tr>
+                    <tr>
+                        <td><img src="{{statics_folder}}/images/Finland.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/France.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Germany.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Greece.jpg" width="120" height="80">  </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <th>Hungary</th>
+                        <th>Ireland</th>
+                        <th>Italy</th>
+                        <th>Latvia</th>
+                    </tr>
+                    <tr>
+                        <td><img src="{{statics_folder}}/images/Hungary.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Ireland.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Italy.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Latvia.jpg" width="120" height="80">  </td>
+                    </tr>    
+                </table>
+                <table>
+                    <tr>
+                        <th>Lithuania</th>
+                        <th>Luxembourg</th>
+                        <th>Malta</th>
+                        <th>Netherlands</th>
+                    </tr>
+                    <tr>
+                        <td><img src="{{statics_folder}}/images/Lithuania.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Luxembourg.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Malta.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Netherlands.jpg" width="120" height="80">  </td>
+                    </tr>    
+                </table>
+                <table>
+                    <tr>
+                        <th>Poland</th>
+                        <th>Portugal</th>
+                        <th>Romania</th>
+                        <th>Slovakia</th>
+                    </tr>
+                    <tr>
+                        <td><img src="{{statics_folder}}/images/Poland.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Portugal.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Romania.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Slovakia.jpg" width="120" height="80">  </td>
+                    </tr>    
+                </table> 
+                <table>
+                    <tr>
+                        <th>Slovenia</th>
+                        <th>Spain</th>
+                        <th>Sweden</th>
+                        <th>European Union</th>
+                    </tr>
+                    <tr>
+                        <td><img src="{{statics_folder}}/images/Slovenia.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Spain.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/Sweden.jpg" width="120" height="80">  </td>
+                        <td><img src="{{statics_folder}}/images/EU.jpg" width="120" height="80">  </td>
+                    </tr>    
+                </table> 
+            </div>
+
+            <div id="rightThing" style="float:right; width:65%;">
+            <h3>Select the country from the map</h3> 
+
+            <!-- Map element --> 
+            <div id="map" style="width: 1000px; height: 600px;"></div>
+
+                <script type="text/javascript">
+
+                    //create the leaflet.js map, centered in Europe
+                    var map = L.map('map').setView([49.32, 14.88], 3);
+                    osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+
+                    // Satelite Layer
+                    googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+                    maxZoom: 20,
+                    subdomains:['mt0','mt1','mt2','mt3']
+                    });
+                    googleSat.addTo(map);
+                    
+
+                    //add geojson 
+                    europedataa= L.geoJSON(europedataa).addTo(map);
+
+
+                    var baseLayers = {
+                        "Satellite":googleSat,
+                        "OpenStreetMap": osm,
+                    };
+
+                    var overlays = {
+                        "Countries": europedataa
+                    };
+
+                    L.control.layers(baseLayers, overlays).addTo(map);
+                    
+                    //add search button
+                    L.Control.geocoder().addTo(map);
+
+                      //var marker = L.marker([50.84673, 4.35247]).addTo(map);
+                    //var popup = marker.bindPopup('<b>Hello world!</b><br />I am a popup.');
+                    //popup.openPopup();
+
+
+                    function changeText(value) {
+                        var country_name = document.getElementById("country_name");
+                        var text = "";
+
+                        if (value == 1) text += "Austria";
+                        if (value == 2) text += "Belgium";
+                        if (value == 3) text += "Germany";
+
+                        country_name.innerHTML = text;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               
+                </script>
+
+                <div id = form>
+                    <form action="{{ url_for("gfg")}}" method="post">
+                        <label for="country">Country:</label>
+                        <input type="text" id="country" name="country" placeholder="country">
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+
+
+
+           </div>
+            
+        </div>
+    </body>
+
+</html>
