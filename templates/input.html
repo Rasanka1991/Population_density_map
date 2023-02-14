@@ -1,5 +1,43 @@
 <!DOCTYPE html>
     <html>
+        <style>
+            .table1{
+                border-collapse: collapse;
+                font-size: 0.8em;
+                border-bottom: 1px solid #dddd;
+            }
+            .table2{
+                border-collapse: collapse;
+                font-size: 0.8em;
+                border-bottom: 1px solid #dddd;
+            }
+            .table3{
+                border-collapse: collapse;
+                font-size: 0.8em;
+                border-bottom: 1px solid #dddd;
+            }
+            .table4{
+                border-collapse: collapse;
+                font-size: 0.8em;
+                border-bottom: 1px solid #dddd;
+            }
+            .table5{
+                border-collapse: collapse;
+                font-size: 0.8em;
+                border-bottom: 1px solid #dddd;
+            }
+            .table6{
+                border-collapse: collapse;
+                font-size: 0.8em;
+                border-bottom: 1px solid #dddd;
+            }
+            .table7{
+                border-collapse: collapse;
+                font-size: 0.8em;
+                border-bottom: 1px solid #dddd;
+            }
+    
+        </style>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -45,117 +83,126 @@
 
     <body> 
         <h1><center>Population Density maps of Countries in European Union</center></h1>
-        <div id="the whole thing">
-            
-            <div id="leftThing" style="float:left; width:35%;">
-
+        <div id="whole page">
+            <div id="leftSide" style="float:left; width:28%;">
                 <h3>Select the country by National flag</h3>
-                
-                <input type="text" id="country_name" style="width:500px"/>
-
-                <table>
-                    <tr>
-                        <th>Austria</th>
-                        <th>Belgium</th>
-                        <th>Bulgaria</th>
-                        <th>Croatia</th>
-                    </tr>
-                    <tr>
-                        <td><a href="javascript: changeText(1);"><img src="{{statics_folder}}/images/Austria.jpg" width="120" height="80" alt="Austria"></a></td>
-                        <td><a href="javascript: changeText(2);"><img src="{{statics_folder}}/images/Belgium.jpg" width="120" height="80" alt="Belgium"></a></td>
-                        <td><a href="javascript: changeText(3);"><img src="{{statics_folder}}/images/Bulgaria.jpg" width="120" height="80" alt="Bulgaria"></a></td>
-                        <td><a href="javascript: changeText(4);"><img src="{{statics_folder}}/images/Croatia.jpg" width="120" height="80" alt="Croatia"></a></td>
-                    </tr>    
+                <table class="table1">
+                    <tbody>
+                        <tr>
+                            <th>Austria</th>
+                            <th>Belgium</th>
+                            <th>Bulgaria</th>
+                            <th>Croatia</th>
+                        </tr>
+                        <tr>
+                            <td><img src="images/Austria.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Belgium.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Bulgaria.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Croatia.jpg" width="90" height="60">  </td>
+                        </tr>
+                    </tbody>
                 </table>
-                <table>
-                    <tr>
-                        <th>Cyprus</th>
-                        <th>Czech Republic</th>
-                        <th>Denmark</th>
-                        <th>Estonia</th>
-                    </tr>
-                    <tr>
-                        <td><a href="javascript: changeText(5);"><img src="{{statics_folder}}/images/Cyprus.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(6);"><img src="{{statics_folder}}/images/Czech_Republic.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(7);"><img src="{{statics_folder}}/images/Denmark.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(8);"><img src="{{statics_folder}}/images/Estonia.jpg" width="120" height="80"></a></td>
-                    </tr>
-                </table> 
-                <table>
-                    <tr>
-                        <th>Finland</th>
-                        <th>France</th>
-                        <th>Germany</th>
-                        <th>Greece</th>
-                    </tr>
-                    <tr>
-                        <td><a href="javascript: changeText(9);"><img src="{{statics_folder}}/images/Finland.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(10);"><img src="{{statics_folder}}/images/France.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(11);"><img src="{{statics_folder}}/images/Germany.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(12);"><img src="{{statics_folder}}/images/Greece.jpg" width="120" height="80"></a></td>
-                    </tr>
+                <table class="table2">
+                    <tbody> 
+                        <tr>
+                            <th>Cyprus</th>
+                            <th>Czech Republic</th>
+                            <th>Denmark</th>
+                            <th>Estonia</th>
+                        </tr>
+                        <tr>
+                            <td><img src="images/Cyprus.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Czech_Republic.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Denmark.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Estonia.jpg" width="90" height="60">  </td>
+                        </tr>
+                    </tbody> 
                 </table>
-                <table>
-                    <tr>
-                        <th>Hungary</th>
-                        <th>Ireland</th>
-                        <th>Italy</th>
-                        <th>Latvia</th>
-                    </tr>
-                    <tr>
-                        <td><a href="javascript: changeText(13);"><img src="{{statics_folder}}/images/Hungary.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(14);"><img src="{{statics_folder}}/images/Ireland.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(15);"><img src="{{statics_folder}}/images/Italy.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(16);"><img src="{{statics_folder}}/images/Latvia.jpg" width="120" height="80"></a></td>
-                    </tr>    
+                <table class="table3">
+                    <tbody>
+                        <tr>
+                            <th>Finland</th>
+                            <th>France</th>
+                            <th>Germany</th>
+                            <th>Greece</th>
+                        </tr>
+                        <tr>
+                            <td><img src="images/Finland.jpg" width="90" height="60">  </td>
+                            <td><img src="images/France.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Germany.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Greece.jpg" width="90" height="60">  </td>
+                        </tr>
+                    </tbody>
                 </table>
-                <table>
-                    <tr>
-                        <th>Lithuania</th>
-                        <th>Luxembourg</th>
-                        <th>Malta</th>
-                        <th>Netherlands</th>
-                    </tr>
-                    <tr>
-                        <td><a href="javascript: changeText(17);"><img src="{{statics_folder}}/images/Lithuania.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(18);"><img src="{{statics_folder}}/images/Luxembourg.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(19);"><img src="{{statics_folder}}/images/Malta.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(20);"><img src="{{statics_folder}}/images/Netherlands.jpg" width="120" height="80"></a></td>
-                    </tr>    
+                <table class="table4">
+                        <tr>
+                            <th>Hungary</th>
+                            <th>Ireland</th>
+                            <th>Italy</th>
+                            <th>Latvia</th>
+                        </tr>
+                        <tr>
+                            <td><img src="images/Hungary.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Ireland.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Italy.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Latvia.jpg" width="90" height="60">  </td>
+                        </tr>
                 </table>
-                <table>
-                    <tr>
-                        <th>Poland</th>
-                        <th>Portugal</th>
-                        <th>Romania</th>
-                        <th>Slovakia</th>
-                    </tr>
-                    <tr>
-                        <td><a href="javascript: changeText(21);"><img src="{{statics_folder}}/images/Poland.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(22);"><img src="{{statics_folder}}/images/Portugal.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(23);"><img src="{{statics_folder}}/images/Romania.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(24);"><img src="{{statics_folder}}/images/Slovakia.jpg" width="120" height="80"></a></td>
-                    </tr>    
-                </table> 
-                <table>
-                    <tr>
-                        <th>Slovenia</th>
-                        <th>Spain</th>
-                        <th>Sweden</th>
-                    </tr>
-                    <tr>
-                        <td><a href="javascript: changeText(25);"><img src="{{statics_folder}}/images/Slovenia.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(26);"><img src="{{statics_folder}}/images/Spain.jpg" width="120" height="80"></a></td>
-                        <td><a href="javascript: changeText(27);"><img src="{{statics_folder}}/images/Sweden.jpg" width="120" height="80"></a></td>
-                    </tr>    
+                <table class="table5">
+                    <tbody>   
+                        <tr>
+                            <th>Lithuania</th>
+                            <th>Luxembourg</th>
+                            <th>Malta</th>
+                            <th>Netherlands</th>
+                        </tr>
+                        <tr>
+                            <td><img src="images/Lithuania.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Luxembourg.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Malta.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Netherlands.jpg" width="90" height="60">  </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table6">
+                    <tbody>   
+                        <tr>
+                            <th>Poland</th>
+                            <th>Portugal</th>
+                            <th>Romania</th>
+                            <th>Slovakia</th>
+                        </tr>
+                        <tr>
+                            <td><img src="images/Poland.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Portugal.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Romania.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Slovakia.jpg" width="90" height="60">  </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table7">
+                    <tbody>    
+                        <tr>
+                            <th>Slovenia</th>
+                            <th>Spain</th>
+                            <th>Sweden</th>
+                            <th>European Union</th>
+                        </tr>
+                        <tr>
+                            <td><img src="images/Slovenia.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Spain.jpg" width="90" height="60">  </td>
+                            <td><img src="images/Sweden.jpg" width="90" height="60">  </td>
+                            <td><img src="images/EU.jpg" width="90" height="60">  </td>
+                        </tr> 
+                    </tbody>   
                 </table> 
             </div>
 
-            <div id="rightThing" style="float:right; width:65%;">
+            <div id="rightSide" style="float:right; width:72%;">
             <h3>Select the country from the map</h3> 
 
             <!-- Map element --> 
-            <div id="map" style="width: 1000px; height: 600px;"></div>
+            <div id="map" style="width: 1050px; height: 550px;"></div>
 
                 <script type="text/javascript">
 
