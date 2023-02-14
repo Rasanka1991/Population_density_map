@@ -83,7 +83,11 @@
         <h1><center>Population Density maps of Countries in European Union</center></h1>
         <div id="whole page">
             <div id="leftSide" style="float:left; width:28%;">
+
                 <h3>Select the country by National flag</h3>
+                <input type="text" id="country_name" style="width:360px"/>
+                <h3></h3>
+
                 <table class="table1">
                     <tbody>
                         <tr>
@@ -99,7 +103,6 @@
                             <td><a href="javascript: changeText(4);"><img src="static/images/Croatia.jpg" width="90" height="60"></a></td>
                         </tr>
                     </tbody>
-                    <tr>           </tr>
                 </table>
                 <table class="table2">
                     <tbody> 
@@ -237,7 +240,7 @@
                     //add search button
                     L.Control.geocoder().addTo(map);
 
-                      //var marker = L.marker([50.84673, 4.35247]).addTo(map);
+                    //var marker = L.marker([50.84673, 4.35247]).addTo(map);
                     //var popup = marker.bindPopup('<b>Hello world!</b><br />I am a popup.');
                     //popup.openPopup();
 
