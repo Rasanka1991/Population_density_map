@@ -9,7 +9,7 @@ import os
 
 
 #get bottom type geojson from inputted coordinates
-def get_country(country_name,connection):
+def get_country_data(country_name,connection):
    """ Query and select bottom_type data from the database, store it in a dataframe and convert it to geojson
 
       Args:
@@ -87,13 +87,12 @@ def gfg():
        cursor = connection.cursor()
 
        # getting the separate data types to display on the map
-       data_to_map = get_country(country_name,connection)
+       data_to_map = get_country_data(country_name,connection)
 
        #Send data to the alexendre python script to get the population density map
 
 
        #Get the population density map
-
        A_map= 2
 
 
