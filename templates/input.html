@@ -58,23 +58,21 @@
         <script src="{{statics_folder}}/data/europe.js"></script>
         <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-
         <style>
             #map{
                 height: 100vh;
                 width: 100%;
             }
     
-            .info {
-        padding: 6px 8px;
-        font: 14px/16px Arial, Helvetica, sans-serif;
-        background: white;
-        background: rgba(255,255,255,0.8);
-        box-shadow: 0 0 15px rgba(0,0,0,0.2);
-        border-radius: 5px;
-    }</style>
-
-        
+            .info {     
+                padding: 6px 8px;
+                font: 14px/16px Arial, Helvetica, sans-serif;
+                background: white;
+                background: rgba(255,255,255,0.8);
+                box-shadow: 0 0 15px rgba(0,0,0,0.2);
+                border-radius: 5px;
+            }
+        </style>  
 
         <title>Population Density</title>
 
@@ -95,12 +93,13 @@
                             <th>Croatia</th>
                         </tr>
                         <tr>
-                            <td><img src="images/Austria.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Belgium.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Bulgaria.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Croatia.jpg" width="90" height="60">  </td>
+                            <td><a href="javascript: changeText(1);"><img src="static/images/Austria.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(2);"><img src="static/images/Belgium.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(3);"><img src="static/images/Bulgaria.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(4);"><img src="static/images/Croatia.jpg" width="90" height="60"></a></td>
                         </tr>
                     </tbody>
+                    <tr>           </tr>
                 </table>
                 <table class="table2">
                     <tbody> 
@@ -111,10 +110,10 @@
                             <th>Estonia</th>
                         </tr>
                         <tr>
-                            <td><img src="images/Cyprus.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Czech_Republic.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Denmark.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Estonia.jpg" width="90" height="60">  </td>
+                            <td><a href="javascript: changeText(5);"><img src="static/images/Cyprus.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(6);"><img src="static/images/Czech_Republic.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(7);"><img src="static/images/Denmark.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(8);"><img src="static/images/Estonia.jpg" width="90" height="60"></a></td>
                         </tr>
                     </tbody> 
                 </table>
@@ -127,10 +126,10 @@
                             <th>Greece</th>
                         </tr>
                         <tr>
-                            <td><img src="images/Finland.jpg" width="90" height="60">  </td>
-                            <td><img src="images/France.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Germany.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Greece.jpg" width="90" height="60">  </td>
+                            <td><a href="javascript: changeText(9);"><img src="static/images/Finland.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(10);"><img src="static/images/France.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(11);"><img src="static/images/Germany.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(12);"><img src="static/images/Greece.jpg" width="90" height="60"></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -142,10 +141,10 @@
                             <th>Latvia</th>
                         </tr>
                         <tr>
-                            <td><img src="images/Hungary.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Ireland.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Italy.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Latvia.jpg" width="90" height="60">  </td>
+                            <td><a href="javascript: changeText(13);"><img src="static/images/Hungary.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(14);"><img src="static/images/Ireland.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(15);"><img src="static/images/Italy.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(16);"><img src="static/images/Latvia.jpg" width="90" height="60"></a></td>
                         </tr>
                 </table>
                 <table class="table5">
@@ -157,10 +156,10 @@
                             <th>Netherlands</th>
                         </tr>
                         <tr>
-                            <td><img src="images/Lithuania.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Luxembourg.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Malta.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Netherlands.jpg" width="90" height="60">  </td>
+                            <td><a href="javascript: changeText(17);"><img src="static/images/Lithuania.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(18);"><img src="static/images/Luxembourg.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(19);"><img src="static/images/Malta.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(20);"><img src="static/images/Netherlands.jpg" width="90" height="60"></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -173,10 +172,10 @@
                             <th>Slovakia</th>
                         </tr>
                         <tr>
-                            <td><img src="images/Poland.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Portugal.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Romania.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Slovakia.jpg" width="90" height="60">  </td>
+                            <td><a href="javascript: changeText(21);"><img src="static/images/Poland.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(22);"><img src="static/images/Portugal.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(23);"><img src="static/images/Romania.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(24);"><img src="static/images/Slovakia.jpg" width="90" height="60"></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -189,10 +188,10 @@
                             <th>European Union</th>
                         </tr>
                         <tr>
-                            <td><img src="images/Slovenia.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Spain.jpg" width="90" height="60">  </td>
-                            <td><img src="images/Sweden.jpg" width="90" height="60">  </td>
-                            <td><img src="images/EU.jpg" width="90" height="60">  </td>
+                            <td><a href="javascript: changeText(25);"><img src="static/images/Slovenia.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(26);"><img src="static/images/Spain.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(27);"><img src="static/images/Sweden.jpg" width="90" height="60"></a></td>
+                            <td><a href="javascript: changeText(28);"><img src="static/images/EU.jpg" width="90" height="60"></a></td>
                         </tr> 
                     </tbody>   
                 </table> 
@@ -209,7 +208,7 @@
                     //create the leaflet.js map, centered in Europe
                     var map = L.map('map').setView([49.32, 14.88], 3);
                     osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors'
                     }).addTo(map);
 
                     // Satelite Layer
