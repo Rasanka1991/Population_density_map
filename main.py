@@ -10,16 +10,16 @@ import os
 
 #get bottom type geojson from inputted coordinates
 def get_country_data(country_name,connection):
-   """ Query and select bottom_type data from the database, store it in a dataframe and convert it to geojson
+   """ Query and select population density data from the database, store it in a dataframe and convert it to geojson
 
       Args:
-            country(text): a text of country name
+            country_name(text): a text of country name
             connection (string): credentials and connection to the database
 
       Returns:
             results from the query in json format
    """
-   #query that gives a Feature Collection object
+   #query that gives a Feature Collection object with population densities in each administrative boundary
    query_country_2 = f'''SELECT jsonb_build_object(
       'type',     'FeatureCollection',
       'features', jsonb_agg(features.feature)
@@ -49,11 +49,11 @@ def get_country_data(country_name,connection):
    #Getting geojson dictionary by calling iloc[0] on the jsonb_build_object column
    feature_collection_dict_country = feature_collection_country.iloc[0]['jsonb_build_object']
 
-   #Converting to geojson
-   bottom_feature_collection = json.dumps(feature_collection_dict_country)
+   #Converting to geojson to return to the fransisco's code
+   pop_density_feature_collection = json.dumps(feature_collection_dict_country)
    print("country_feature_collection created")
 
-   return  bottom_feature_collection
+   return  pop_density_feature_collection
 
 #get connection to the Postgres database
 def get_db_connection():
@@ -77,9 +77,8 @@ app.config['UPLOAD_FOLDER'] = statics_folder
 @app.route('/', methods =["GET", "POST"]) #importing flask and creating a home route which has both get and post methods
 def gfg():
     if request.method == "POST": #if requesting method is post, we get the input data from HTML form
-       # getting input with longitude (x) = lon from the HTML form
+       # Getting the country name
        country_name = request.form.get("con")
-       # getting input with latitude (y) = lat from the HTML form   
        print(country_name)
 
       #connecting to the database
@@ -89,7 +88,7 @@ def gfg():
        # getting the separate data types to display on the map
        data_to_map = get_country_data(country_name,connection)
 
-       #Send data to the alexendre python script to get the population density map
+       #Send data to the fransisco python script to get the population density map
 
 
        #Get the population density map
