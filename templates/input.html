@@ -1,5 +1,25 @@
 <!DOCTYPE html>
     <html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Leafletstylesheet --> 
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" 
+        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+        crossorigin="">
+
+        <!-- Leaflet JavaScript library --> 
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+        <script src="{{statics_folder}}/src/leaflet.ajax.min.js"></script>
+
+        <script src="{{statics_folder}}/data/europe.js"></script>
+        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
         <style>
             .table1{
                 border-collapse: collapse;
@@ -37,28 +57,6 @@
                 border-bottom: 1px solid #dddd;
             }
     
-        </style>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <!-- Leafletstylesheet --> 
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" 
-        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-        crossorigin="">
-
-        <!-- Leaflet JavaScript library --> 
-        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
-
-        <script src="{{statics_folder}}/src/leaflet.ajax.min.js"></script>
-
-        <script src="{{statics_folder}}/data/europe.js"></script>
-        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-
-        <style>
             #map{
                 height: 100vh;
                 width: 100%;
@@ -81,13 +79,19 @@
 
     <body> 
         <h1><center>Population Density maps of Countries in European Union</center></h1>
+        <h3>
+        <div id = form>
+            <form action="{{ url_for("gfg")}}" method="post">
+                <label for="country">The selected country is :</label>
+                <input type="text" id="country_name" name="country" placeholder="country">
+                <button type="submit">Submit</button>
+            </form>
+        </div></h3>
+
         <div id="whole page">
             <div id="leftSide" style="float:left; width:28%;">
-
-                <h3>Select the country by National flag</h3>
-                <input type="text" id="country_name" style="width:360px"/>
-                <h3></h3>
-
+                <h3>Select the country by National flag</h3>           
+                
                 <table class="table1">
                     <tbody>
                         <tr>
@@ -226,6 +230,20 @@
                     europedataa= L.geoJSON(europedataa).addTo(map);
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    //Layer control
                     var baseLayers = {
                         "Satellite":googleSat,
                         "OpenStreetMap": osm,
@@ -246,7 +264,6 @@
 
 
                     function changeText(value) {
-                        var country_name = document.getElementById("country_name");
                         var text = "";
 
                         if (value == 1) text += "Austria";
@@ -277,21 +294,13 @@
                         if (value == 26) text += "Spain";
                         if (value == 27) text += "Sweden";
 
-                        country_name.innerHTML = text;
-                     }
-               
-                </script>
-
-                <div id = form>
-                    <form action="{{ url_for("gfg")}}" method="post">
-                        <label for="country">Country:</label>
-                        <input type="text" id="country" name="country" placeholder="country">
-                        <button type="submit">Submit</button>
-                    </form>
-                </div>
-
-
-
+                        var country_name = document.getElementById("country_name").innerHTML=text;
+                        document.getElementById("country_name").placeholder=text;
+                            }
+                            onload=function(){
+                                getQuerystring();
+                            };
+               </script>
            </div>
             
         </div>
