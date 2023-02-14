@@ -78,19 +78,27 @@ app.config['UPLOAD_FOLDER'] = statics_folder
 def gfg():
     if request.method == "POST": #if requesting method is post, we get the input data from HTML form
        # getting input with longitude (x) = lon from the HTML form
-       country_name = request.form.get("country_name")
+       country_name = request.form.get("con")
        # getting input with latitude (y) = lat from the HTML form   
-       print(country)
+       print(country_name)
 
       #connecting to the database
        connection = get_db_connection()
        cursor = connection.cursor()
 
        # getting the separate data types to display on the map
-       country = get_country(country,connection)
+       data_to_map = get_country(country_name,connection)
 
-       #render the result form with data
-       return render_template("input.html", country = country)
+       #Send data to the alexendre python script to get the population density map
+
+
+       #Get the population density map
+
+       A_map= 2
+
+
+       #render the output html with the population density map
+       return render_template("output.html", map = A_map)
 
     else:
       #render the input page
