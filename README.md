@@ -4,12 +4,12 @@
 
 ## The conceptual work flow of the project is as follows,
 
-1. Click on the country flag of interest on the html page
+1. Click on top of the country flag or select the country of interest using the dispalyed map in the html page
 2. Collect the clicked country name and pass to the main.py
 3. Search the database to obtain the population and boundary information of the selected country
-4. Pass the data to the pop_density_map_v3 to calculate the population density and obtain the raster to display
-5. Pass the output map to the main.py
-6. Display the population density raster on the HTML Map
+4. Pass the data to the pop_density_map_v3.py to calculate the population density and obtain the raster to display
+5. Get the output map from  pop_density_map_v3.py to the main.py
+6. Display the population density raster using HTML Map
 
 ## Steps to followed to work on a local directory
 
