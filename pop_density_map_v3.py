@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Feb  8 15:40:55 2023
+Created on Sun Feb 12 17:03:42 2023
 
 @author: Francisco
 """
-
 
 import pandas as pd
 import geopandas as gpd
@@ -13,35 +12,77 @@ import pyproj
 import psycopg2
 from sqlalchemy import create_engine
 from pyproj import CRS, Proj, transform
-import os
 
-cw = os.getcwd()
+URL_arg = 'https://citypopulation.de/php/argentina-admin.php'
+URL_prt = 'https://citypopulation.de/en/portugal/admin/'
+URL_ger = 'https://citypopulation.de/en/germany/admin/'
+URL_aus = 'https://citypopulation.de/en/austria/admin/'
 
-
-#set correct directory
-#pyproj.datadir.set_data_dir("C:\\Users\\Francisco\\miniconda3\\envs\\project-env\\Library\\share\\proj")
-
-
-#####################################################################################################################EXTRACT AND TRANSFORM DATA#####################################################################################################################################
-
+x = int(input("""Choose the country that you want to plot?
+          1- Argentina
+          2-Portugal
+          3-Germany
+          4-Austria
+          """))
+#######################################################################################################ETL Data + Shapefile#####################################################################################################################################
 # # Data aquisition (population data from the web)
-data = pd.read_html('https://citypopulation.de/php/argentina-admin.php')[0]
-data = data.iloc[0:,:]
+if x ==1:
+    data = pd.read_html(URL_arg)[0]
+    data = data.iloc[0:,:]
+elif x ==2:
+    data =pd.read_html(URL_prt)[0]
+    data = data.iloc[0:,:]
+elif x ==3:
+    data = pd.read_html(URL_ger)[0]
+    data = data.iloc[0:,:]
+elif x ==4:
+    data = pd.read_html(URL_aus)[0]
+    data = data.iloc[0:,:]
+else:
+    print("YOU MUST CHOOSE A NUMBER BETWEEN 1 AND 4... WE'RE WORKING HARD TO HAVE MORE COUNTRIES AVAILABLE")
 
 print("#### AQUIRING DATA ####")
 
 # #select just the colums i want/need
-data = data[['Name','Status','Population Census 2022-05-18']]
+if x ==1:
+    data = data[['Name','Status','Population Census 2022-05-18']]
+elif x ==2:
+    data = data[['Name','Status','Population Census 2021-03-22']]
+elif x==3:
+    data = data[['Name','Status','Population Estimate 2021-12-31']]
+elif x ==4:
+    data= data[['Name','Status','Population Estimate 2022-01-01']]
+else:
+    print("We're facing a problem... Try again!")
 
 print('##### SELECTING THE RIGHT COLUMNS #####')
 
 # #change the name of a column
-data.rename(columns = {'Population Census 2022-05-18':'Population'}, inplace = True)
-
+if x == 1:
+    data.rename(columns = {'Population Census 2022-05-18':'Population'}, inplace = True)
+elif x == 2:
+    data.rename(columns = {'Population Census 2021-03-22':'Population'}, inplace = True)
+elif x == 3:
+    data.rename(columns = {'Population Estimate 2021-12-31':'Population'}, inplace = True)
+elif x == 4:
+    data.rename(columns = {'Population Estimate 2022-01-01':'Population'}, inplace = True)
+else:
+    print("We're facing a problem... Try again!")
+    
+    
 print('##### RENAMING SOME COLUMNS #####')
 
 # #filter rows by value
-data = data.loc[data['Status'] == 'Province']
+if x == 1:
+    data = data.loc[data['Status'] == 'Province']
+elif x == 2:
+    data = data.loc[data['Status'] == 'District'] 
+elif x == 3:
+    data = data.loc[data['Status'] == 'State']
+elif x == 4:
+    data = data.loc[data['Status'] == 'State']
+else:
+    print("We're facing a problem... Try again!")
 
 print('##### FILTERING DATA #####')
 
@@ -51,43 +92,117 @@ data['Pop_density'] = ''
 
 print('##### CREATING NEW COLUMNS #####')
 
-# #For loop to clean the data and add in the new column
-for index, row in data.iterrows():
-    if '('and ')' in row['Name']:
-        start_index = row['Name'].find('')
-        end_index = row['Name'].find('(')
-        data.loc[index,'District'] = data.loc[index]['Name'][start_index:end_index -1]
-        
-    else:
-        data.loc[index,'District'] = data.loc[index]['Name']
+# #For loop to clean the data and add in the new 
+if x == 1:
+    for index, row in data.iterrows():
+        if '('and ')' in row['Name']:
+            start_index = row['Name'].find('')
+            end_index = row['Name'].find('(')
+            data.loc[index,'District'] = data.loc[index]['Name'][start_index:end_index -1]
+            
+        else:
+            data.loc[index,'District'] = data.loc[index]['Name']
+elif x == 2:
+    for index, row in data.iterrows():
+        if '['and ']' in row['Name']:
+            start_index = row['Name'].find('')
+            end_index = row['Name'].find('[')
+            data.loc[index,'District'] = data.loc[index]['Name'][start_index:end_index -1]
+            
+        else:
+            data.loc[index,'District'] = data.loc[index]['Name']
+elif x == 3:
+    for index, row in data.iterrows():
+        if '['and ']' in row['Name']:
+            start_index = row['Name'].find('')
+            end_index = row['Name'].find('[')
+            data.loc[index,'District'] = data.loc[index]['Name'][start_index:end_index -1]
+            
+        else:
+            data.loc[index,'District'] = data.loc[index]['Name']
+elif x == 4:
+    for index, row in data.iterrows():
+        if '['and ']' in row['Name']:
+            start_index = row['Name'].find('')
+            end_index = row['Name'].find('[')
+            data.loc[index,'District'] = data.loc[index]['Name'][start_index:end_index -1]
+            
+        else:
+            data.loc[index,'District'] = data.loc[index]['Name']
+
 
 # # Transforming the population columns into int    
 for index, row in data.iterrows():
-    data.loc[index,'Pop_density'] = int(data.loc[index]['Population'])
+    data.loc[index,'Pop'] = int(data.loc[index]['Population'])
     
 ######################################################################################################################################### LOAD DATA INTO DATABASE  ##############################################################################################
 print('#### CONECTING WITH THE DATA BASE ####') 
-user = "postgres"
-password = "123"
-host = "localhost"
-port = 5432
-database = "population_density"
- 
-conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
-engine = create_engine(conn)
-  
-#Import shapefile to databse
-data.to_sql('data', conn, if_exists= 'append')
- 
+if x == 1:
+    user = "postgres"
+    password = "postgres"
+    host = "localhost"
+    port = 5432
+    database = "test"
+     
+    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
+    engine = create_engine(conn)
+      
+    #Import shapefile to databse
+    data.to_sql('data_arg', conn, if_exists= 'append')
+elif x == 2:
+    user = "postgres"
+    password = "postgres"
+    host = "localhost"
+    port = 5432
+    database = "test"
+     
+    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
+    engine = create_engine(conn)
+      
+    #Import shapefile to databse
+    data.to_sql('data_prt', conn, if_exists= 'append')
+elif x == 3:
+    user = "postgres"
+    password = "postgres"
+    host = "localhost"
+    port = 5432
+    database = "test"
+     
+    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
+    engine = create_engine(conn)
+      
+    #Import shapefile to databse
+    data.to_sql('data_ger', conn, if_exists= 'append')
+elif x == 4:
+    user = "postgres"
+    password = "postgres"
+    host = "localhost"
+    port = 5432
+    database = "test"
+     
+    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
+    engine = create_engine(conn)
+      
+    #Import shapefile to databse
+    data.to_sql('data_aus', conn, if_exists= 'append')
+else:
+    print("We're having troubles... Try again!")
+    
 print("#### THE CONNECTION WITH THE DATA BASE WAS ESTABLISHED ####")
 
 
-#################################################################################################################EXTRACT AND TRANSFORM THE SHAPEFILE ########################################################################################################
-
 # #Reading data from the shapefile
-shp_loc= os.path.join(cw, 'static','data','data')
-ctry = gpd.read_file(os.path.join(shp_loc,'ARG_adm1.shp'))
-
+if x == 1:
+    ctry = gpd.read_file(r'C:\Users\Francisco\Documents\Nova IMS\Programing\teste\data\ARG_adm1.shp')
+elif x == 2:
+    ctry = gpd.read_file(r'C:\Users\Francisco\Documents\Nova IMS\Programing\teste\data\PRT_adm1.shp')
+elif x ==3:
+    ctry = gpd.read_file(r'C:\Users\Francisco\Documents\Nova IMS\Programing\teste\data\DEU_adm1.shp')
+elif x ==4:
+    ctry = gpd.read_file(r'C:\Users\Francisco\Documents\Nova IMS\Programing\teste\data\AUT_adm1.shp')
+else:
+    print("We don't have that shapefile!")
+    
 
 print('#### READING SHAPEFILE ####')
     
@@ -111,13 +226,13 @@ print("#### ASSIGNING THE RIGHT COORDINATE SYSTEM ####")
 #population_data.replace('Lisbon', 'Lisboa', inplace = True)
 
 # #crosschecking shapefile + data from website 
-i=0
+
 for index, row in ctry['District'].iteritems():
     if row in data['District'].tolist():
         pass
     else:
         print('The district ', row, 'is not in the population_data list')
-        i+= 1
+        
         
 
 # #Create a new column in shapefile to calculate the area of the district
@@ -129,35 +244,64 @@ ctry = ctry.merge(data, on='District')
 
 # #Create a population density column
 print('#### CALCULATING THE POPULATION DENSITY ####')
-ctry['pop_density (people/sq Km)'] = ctry['Pop_density']/ctry['area']
+ctry['pop_density'] = ctry['Pop']/ctry['area']
 
 ##########################################################################################################################LOAD THE SHAPEFILE INTO DATABASE#####################################################################################################
 # #Load Shapefile into the Data Base 
 
 print('#### CONECTING WITH THE DATA BASE ####') 
-
-user = "postgres"
-password = "123"
-host = "localhost"
-port = 5432
-database = "test"
- 
-conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
-engine = create_engine(conn)
- 
-# #Import shapefile to databse
-ctry.to_postgis(name="shp", con=engine, if_exists= 'append', schema="public")
- 
+if x == 1:
+    user = "postgres"
+    password = "postgres"
+    host = "localhost"
+    port = 5432
+    database = "test"
+     
+    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
+    engine = create_engine(conn)
+     
+    # #Import shapefile to databse
+    ctry.to_postgis(name="shp_arg", con=engine, if_exists= 'append', schema="public")
+elif x == 2:
+    user = "postgres"
+    password = "postgres"
+    host = "localhost"
+    port = 5432
+    database = "test"
+     
+    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
+    engine = create_engine(conn)
+     
+    # #Import shapefile to databse
+    ctry.to_postgis(name="shp_prt", con=engine, if_exists= 'append', schema="public")
+elif x == 3:
+    user = "postgres"
+    password = "postgres"
+    host = "localhost"
+    port = 5432
+    database = "test"
+     
+    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
+    engine = create_engine(conn)
+     
+    # #Import shapefile to databse
+    ctry.to_postgis(name="shp_ger", con=engine, if_exists= 'append', schema="public")
+elif x == 4:
+    user = "postgres"
+    password = "postgres"
+    host = "localhost"
+    port = 5432
+    database = "test"
+     
+    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
+    engine = create_engine(conn)
+     
+    # #Import shapefile to databse
+    ctry.to_postgis(name="shp_aus", con=engine, if_exists= 'append', schema="public")
+else:
+    print("We're having troubles... Try again!")
+    
 print("#### THE CONNECTION WITH THE DATA BASE WAS ESTABLISHED ####")
 
-#####################################################################################################PLOTING DENSITY POPULATION MAP###############################################################################################################################
-
-print('#### PLOTING A BEUTIFULL MAP JUST FOR YOU ####')
-with plt.style.context(("seaborn", "ggplot")):
-    ctry.plot(column ='pop_density (people/sq Km)', cmap = 'YlOrRd', figsize=(10,5),legend= True, edgecolor="black",scheme='natural_breaks', k=7, legend_kwds={'loc': 'center left', 'title': 'Population Density (people/sq Km)','fontsize':12,'frameon':True, 'bbox_to_anchor':(1,0.5)})
 
 
-plt.xlabel("Longitude")
-plt.ylabel("Latitude")
-plt.title("Population Density Map")
-plt.savefig('population_density_ctry.jpg')
