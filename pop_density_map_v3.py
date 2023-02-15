@@ -68,10 +68,10 @@ for index, row in data.iterrows():
 ######################################################################################################################################### LOAD DATA INTO DATABASE  ##############################################################################################
 print('#### CONECTING WITH THE DATA BASE ####') 
 user = "postgres"
-password = "postgres"
+password = "123"
 host = "localhost"
 port = 5432
-database = "test"
+database = "population_density"
  
 conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
 engine = create_engine(conn)
@@ -137,7 +137,7 @@ ctry['pop_density (people/sq Km)'] = ctry['Pop_density']/ctry['area']
 print('#### CONECTING WITH THE DATA BASE ####') 
 
 user = "postgres"
-password = "postgres"
+password = "123"
 host = "localhost"
 port = 5432
 database = "test"

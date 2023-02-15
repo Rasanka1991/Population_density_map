@@ -36,7 +36,6 @@ def get_country_data(country_name,connection):
       WHERE country (b.country= country)) inputs) features'''
 
 
-
    query_country = f'''SELECT row_to_json(f) As feature 
      FROM (SELECT 'Feature' As type \
      , ST_AsGeoJSON('GEOM')::json As geometry \
