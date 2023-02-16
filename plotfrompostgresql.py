@@ -4,7 +4,7 @@ Created on Mon Feb 13 16:47:05 2023
 
 @author: Francisco
 """
-
+from flask import Flask
 from sqlalchemy import create_engine
 import psycopg2
 import pandas as pd
@@ -15,15 +15,27 @@ from pyproj import CRS, Proj, transform
 
 # establishing the connection
 
-user = "postgres"
-password = "postgres"
-host = "localhost"
-port = 5432
-database = "test"
- 
-conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
+DB_CONFIG = {
+    "database": "test",
+    "username": "postgres",
+    "password": "postgres",
+    "host": "localhost",
+    "port": "5432"}
+
+# Create a flask application
+app = Flask(__name__)
+
+username = DB_CONFIG['username']
+password = DB_CONFIG['password']
+host = DB_CONFIG['host']
+port = DB_CONFIG['port']
+database = DB_CONFIG['database']
+
+database_uri = f"postgresql://{username}:{password}@{host}:{port}/{database}"
+conn = database_uri
+app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 engine = create_engine(conn)
-sql = 'SELECT geometry as geom, pop_density FROM shp_aus'
+sql = 'SELECT geometry as geom, pop_density FROM shp_prt'
 
 print('#### PLOTING A BEUTIFULL MAP JUST FOR YOU ####')
 ctry = gpd.read_postgis(sql, con = engine)
@@ -42,3 +54,7 @@ plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 plt.title("Population Density Map")
 plt.savefig('population_density_ctry.jpg')
+
+if __name__ == '__main__':
+    
+    app.run(debug=True)
