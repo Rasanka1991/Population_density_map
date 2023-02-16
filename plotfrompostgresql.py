@@ -23,7 +23,7 @@ database = "test"
  
 conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
 engine = create_engine(conn)
-sql = 'SELECT geometry as geom, pop_density FROM shp_prt'
+sql = 'SELECT geometry as geom, pop_density FROM shp_aus'
 
 print('#### PLOTING A BEUTIFULL MAP JUST FOR YOU ####')
 ctry = gpd.read_postgis(sql, con = engine)
