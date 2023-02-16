@@ -89,6 +89,19 @@ print('##### FILTERING DATA #####')
 # #Create empty column
 data['District'] = ''
 data['Pop_density'] = ''
+if x == 1:
+    data['Country'] = 'Argentina'
+elif x ==2:
+    data['Country'] = 'Portugal'
+elif x ==3:
+    data['Country'] = 'Germany'
+elif x ==4:
+    data['Country'] = 'Austria'
+else:
+    print("We're facing a problem... Try again!")
+
+
+    
 
 print('##### CREATING NEW COLUMNS #####')
 
@@ -135,60 +148,6 @@ elif x == 4:
 for index, row in data.iterrows():
     data.loc[index,'Pop'] = int(data.loc[index]['Population'])
     
-######################################################################################################################################### LOAD DATA INTO DATABASE  ##############################################################################################
-print('#### CONECTING WITH THE DATA BASE ####') 
-if x == 1:
-    user = "postgres"
-    password = "postgres"
-    host = "localhost"
-    port = 5432
-    database = "test"
-     
-    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
-    engine = create_engine(conn)
-      
-    #Import shapefile to databse
-    data.to_sql('data_arg', conn, if_exists= 'append')
-elif x == 2:
-    user = "postgres"
-    password = "postgres"
-    host = "localhost"
-    port = 5432
-    database = "test"
-     
-    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
-    engine = create_engine(conn)
-      
-    #Import shapefile to databse
-    data.to_sql('data_prt', conn, if_exists= 'append')
-elif x == 3:
-    user = "postgres"
-    password = "postgres"
-    host = "localhost"
-    port = 5432
-    database = "test"
-     
-    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
-    engine = create_engine(conn)
-      
-    #Import shapefile to databse
-    data.to_sql('data_ger', conn, if_exists= 'append')
-elif x == 4:
-    user = "postgres"
-    password = "postgres"
-    host = "localhost"
-    port = 5432
-    database = "test"
-     
-    conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
-    engine = create_engine(conn)
-      
-    #Import shapefile to databse
-    data.to_sql('data_aus', conn, if_exists= 'append')
-else:
-    print("We're having troubles... Try again!")
-    
-print("#### THE CONNECTION WITH THE DATA BASE WAS ESTABLISHED ####")
 
 
 # #Reading data from the shapefile
@@ -206,7 +165,7 @@ else:
 
 print('#### READING SHAPEFILE ####')
     
-# # to select only the columns i want from prt shapefile
+# # to select only the columns i want from shapefile
 ctry =ctry[['NAME_1','geometry']] 
 
 print('##### SELECTING THE RIGHT COLUMNS OF THE SHAPEFILE #####')
@@ -218,7 +177,7 @@ print('##### RENAMING SOME COLUMNS OF THE SHAPEFILE #####')
 
 
 #Reprojection of the coordinate system (change degrees to meters to calculate the area of the polygons in squared meters)
-ctry.to_crs(epsg=6893, inplace =True)
+ctry = ctry.to_crs(3857)
 
 print("#### ASSIGNING THE RIGHT COORDINATE SYSTEM ####")
 
@@ -237,6 +196,7 @@ for index, row in ctry['District'].iteritems():
 
 # #Create a new column in shapefile to calculate the area of the district
 ctry['area'] = ctry.area/1000000
+
 
 # #attreibute match (join)
 print("#### MATCHING THE INFORMATION FROM DATA WITH THE SHAPEFILE ####")
