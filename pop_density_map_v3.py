@@ -177,7 +177,10 @@ print('##### RENAMING SOME COLUMNS OF THE SHAPEFILE #####')
 
 
 #Reprojection of the coordinate system (change degrees to meters to calculate the area of the polygons in squared meters)
-ctry = ctry.to_crs(3857)
+
+
+ctry = ctry.to_crs('+proj= merc')
+
 
 print("#### ASSIGNING THE RIGHT COORDINATE SYSTEM ####")
 

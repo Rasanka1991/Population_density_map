@@ -35,7 +35,7 @@ database_uri = f"postgresql://{username}:{password}@{host}:{port}/{database}"
 conn = database_uri
 app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 engine = create_engine(conn)
-sql = 'SELECT geometry as geom, pop_density FROM shp_prt'
+sql = 'SELECT geometry as geom, pop_density FROM shp_aus'
 
 print('#### PLOTING A BEUTIFULL MAP JUST FOR YOU ####')
 ctry = gpd.read_postgis(sql, con = engine)
@@ -50,8 +50,8 @@ with plt.style.context(("seaborn", "ggplot")):
 
 
 
-plt.xlabel("Longitude")
-plt.ylabel("Latitude")
+plt.xlabel("X Coordinates (meters)")
+plt.ylabel("Y Coordinates (meters)")
 plt.title("Population Density Map")
 plt.savefig('population_density_ctry.jpg')
 
