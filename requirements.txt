@@ -7,3 +7,5 @@ flask
 SQLAlchemy
 psycopg2
 lxml
+python-dotenv
+psycopg2-binary
