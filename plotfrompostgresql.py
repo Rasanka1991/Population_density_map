@@ -5,13 +5,16 @@ Created on Mon Feb 13 16:47:05 2023
 @author: Francisco
 """
 from flask import Flask
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 import psycopg2
 import pandas as pd
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import pyproj
 from pyproj import CRS, Proj, transform
+
+from dotenv import load_dotenv
+load_dotenv()
 
 # establishing the connection
 
@@ -35,10 +38,17 @@ database_uri = f"postgresql://{username}:{password}@{host}:{port}/{database}"
 conn = database_uri
 app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 engine = create_engine(conn)
-sql = 'SELECT geometry as geom, pop_density FROM shp_aus'
+#sql = 'SELECT geometry as geom, pop_density FROM shp_aus'
 
 print('#### PLOTING A BEUTIFULL MAP JUST FOR YOU ####')
-ctry = gpd.read_postgis(sql, con = engine)
+
+with engine.begin() as connection: 
+    ctry = gpd.read_postgis(
+        sql=text(fr'SELECT geometry as geom, pop_density FROM shp_aus'),
+        con=connection,
+    )
+
+#ctry = gpd.read_postgis(sql, con = engine)
 with plt.style.context(("seaborn", "ggplot")):
     ctry.plot(column ='pop_density', cmap = 'YlOrRd', figsize=(10,5),
                legend= True,
