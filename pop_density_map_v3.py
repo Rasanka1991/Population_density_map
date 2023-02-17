@@ -12,6 +12,7 @@ import pyproj
 import psycopg2
 from sqlalchemy import create_engine
 from pyproj import CRS, Proj, transform
+import os
 
 URL_arg = 'https://citypopulation.de/php/argentina-admin.php'
 URL_prt = 'https://citypopulation.de/en/portugal/admin/'
@@ -151,14 +152,16 @@ for index, row in data.iterrows():
 
 
 # #Reading data from the shapefile
+cw = os.getcwd()
+data_location = os.path.join(cw,'static','data','data')
 if x == 1:
-    ctry = gpd.read_file(r'C:\Users\Francisco\Documents\Nova IMS\Programing\teste\data\ARG_adm1.shp')
+    ctry = gpd.read_file(os.path.join(data_location,'ARG_adm1.shp'))
 elif x == 2:
-    ctry = gpd.read_file(r'C:\Users\Francisco\Documents\Nova IMS\Programing\teste\data\PRT_adm1.shp')
+    ctry = gpd.read_file(os.path.join(data_location,'PRT_adm1.shp'))
 elif x ==3:
-    ctry = gpd.read_file(r'C:\Users\Francisco\Documents\Nova IMS\Programing\teste\data\DEU_adm1.shp')
+    ctry = gpd.read_file(os.path.join(data_location,'DEU_adm1.shp'))
 elif x ==4:
-    ctry = gpd.read_file(r'C:\Users\Francisco\Documents\Nova IMS\Programing\teste\data\AUT_adm1.shp')
+    ctry = gpd.read_file(os.path.join(data_location,'AUT_adm1.shp'))
 else:
     print("We don't have that shapefile!")
     
@@ -224,7 +227,7 @@ if x == 1:
     engine = create_engine(conn)
      
     # #Import shapefile to databse
-    ctry.to_postgis(name="shp_arg", con=engine, if_exists= 'append', schema="public")
+    ctry.to_postgis(name="shp_arg", con=engine, if_exists= 'replace', schema="public")
 elif x == 2:
     user = "postgres"
     password = "postgres"
@@ -236,7 +239,7 @@ elif x == 2:
     engine = create_engine(conn)
      
     # #Import shapefile to databse
-    ctry.to_postgis(name="shp_prt", con=engine, if_exists= 'append', schema="public")
+    ctry.to_postgis(name="shp_prt", con=engine, if_exists= 'replace', schema="public")
 elif x == 3:
     user = "postgres"
     password = "postgres"
@@ -248,7 +251,7 @@ elif x == 3:
     engine = create_engine(conn)
      
     # #Import shapefile to databse
-    ctry.to_postgis(name="shp_ger", con=engine, if_exists= 'append', schema="public")
+    ctry.to_postgis(name="shp_ger", con=engine, if_exists= 'replace', schema="public")
 elif x == 4:
     user = "postgres"
     password = "postgres"
@@ -260,7 +263,7 @@ elif x == 4:
     engine = create_engine(conn)
      
     # #Import shapefile to databse
-    ctry.to_postgis(name="shp_aus", con=engine, if_exists= 'append', schema="public")
+    ctry.to_postgis(name="shp_aus", con=engine, if_exists= 'replace', schema="public")
 else:
     print("We're having troubles... Try again!")
     
