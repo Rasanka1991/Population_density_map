@@ -50,6 +50,6 @@ database = "project"
 conn = f"postgresql://{user}:{password}@{host}:{port}/{database}"
 engine = create_engine(conn)
 
-ctry.to_postgis(name="eu_mergre", con=engine, if_exists= 'replace', schema="public")
+ctry.to_postgis(name="eu_merge", con=engine, if_exists= 'replace', schema="public")
 
 print("#### THE CONNECTION WITH THE DATA BASE WAS ESTABLISHED ####")
