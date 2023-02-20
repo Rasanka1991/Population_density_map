@@ -15,8 +15,6 @@
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
 
-        <script src="{{statics_folder}}/data/europe.js"></script>
-
 
         <style>
             .table1{
@@ -54,7 +52,31 @@
                 font-size: 0.8em;
                 border-bottom: 1px solid #dddd;
             }
+    
+            .info {     
+                padding: 6px 8px;
+                font: 14px/16px Arial, Helvetica, sans-serif;
+                background: white;
+                background: rgba(255,255,255,0.8);
+                box-shadow: 0 0 15px rgba(0,0,0,0.2);
+                border-radius: 5px;
+            }
+            .info h4 {
+                margin: 0 0 5px;
+                color: #777;
+            }
 
+            .legend {
+                line-height: 18px;
+                color: #555;
+            }
+            .legend i {
+                width: 18px;
+                height: 18px;
+                float: left;
+                margin-right: 8px;
+                opacity: 0.7;
+            }
         </style>  
 
         <title>Population Density</title>
@@ -193,118 +215,174 @@
             <!-- Map element --> 
             <div id="map" style="width: 1050px; height: 550px;"></div>
 
-                <script type="text/javascript">
+        </div>
+            
+    </div>
+</body>
+</html>
+            
+            
+<script type="text/javascript">
 
-                    //create the leaflet.js map, centered in Europe
-                    var map = L.map('map').setView([55, 14.88], 4);
-                    osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors'
-                    }).addTo(map);
+    /*===================================================
+                ADD OSM AND SATELLITE TILE LAYERS              
+    ===================================================*/
 
-                    // Satelite Layer
-                    googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-                    maxZoom: 20,
-                    subdomains:['mt0','mt1','mt2','mt3']
-                    });
-                    googleSat.addTo(map);
-                    
+    //CREATE THE LEAFLETS MAP
+    var map = L.map('map').setView([49.32, 14.88], 4);
+    //OSM LAYER
+    osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors'
+    }).addTo(map);
 
-                    //add geojson 
-                    function style_countries(feature) {
-                        return {
-                            fillColor: 'green', 
-                            fillOpacity: 0.5,  
-                            weight: 2,
-                            opacity: 1,
-                            color: '#ffffff'
-                        };
-                    }
-                    var highlight = {
+    // SATELLITE LAYER
+    googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+    });
+    googleSat.addTo(map);
+    
+    /*===================================================
+                        ADD GEOJSON              
+    ===================================================*/
+    
+    //GET COLOR ACCORDING TO THE POPULATION
+    function getColor(d) {
+        return d > 600 ? '#800026' :
+            d > 300  ? '#BD0026' :
+            d > 100  ? '#E31A1C' :
+            d > 50  ? '#FC4E2A' :
+            d > 25   ? '#FD8D3C' :
+            d > 10   ? '#FEB24C' :
+            d > 5   ? '#FED976' :
+                        '#FFEDA0';
+    }
+
+    function style(feature) {
+        return {
+            fillColor: getColor(feature.properties.pop_density),
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+        };
+    }
+    var highlight = {
                         'fillColor': 'yellow',
                         'weight': 2,
                         'opacity': 1
-                    };
+                    }; 
+    
+    //FUNCTION TO DISPLAY INFO ABOUT TO REGIONS
+    function showinfo(e) {
+        population_json.setStyle(style);
+        e.target.setStyle(highlight)
+        info.update(e.target.feature.properties);
+    }
 
+    //CALL FUCTIONS ON GEOJSON DATA
+    function onEachFeature(feature, layer) {
+        layer.on({
+            click: showinfo
+        });
+    }
 
-                    function forEachFeature_countries(feature, layer) {
-                                // Tagging each state poly with their name for the search control.
-                                layer._leaflet_id = feature.properties.OBJECTID;
+    //ADD POPULATION DATA TO MAP
+    var population_json = {{population_json|safe}};
+    var population_json = L.geoJSON(population_json, {onEachFeature: onEachFeature, style: style}).addTo(map);
+    map.fitBounds(population_json.getBounds()); //zoom to the selected country
+    
+    /*===================================================
+                        LAYER CONTROL              
+    ===================================================*/
+    var baseLayers = {
+        "Satellite":googleSat,
+        "OpenStreetMap": osm,
+    };
 
-                                var popupContent = "<p><b>Country: </b>"+ feature.properties.name +
-                                    "</br><b>Region: </b>"+ feature.properties.region +'</p>';
+    L.control.layers(baseLayers).addTo(map);
+    
+    /*===================================================
+                        ADD INFO              
+    ===================================================*/       
+    var info = L.control();
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+    };
 
-                                layer.bindPopup(popupContent);
+    // method that we will use to update the control based on feature properties passed
+    info.update = function (props) {
+        this._div.innerHTML = '<h4>Population Density</h4>' +  (props ?
+            '<b>' + props.NAME + '</b><br />' + props.NAME_1 + '<br />' + Math.ceil(props.pop_density) + ' persons / km<sup>2</sup>'
+            : 'Click over a region');
+    };
 
-                                layer.on("click", function (e) { 
-                                    europedataa.setStyle(style_countries); //resets layer colors
-                                    layer.setStyle(highlight);  //highlights selected.
+    info.addTo(map);
 
-                                    var country_name = document.getElementById("country_name").innerHTML=feature.properties.name;
-                                    document.getElementById("country_name").value=country_name;
-                            })};
-                            onload=function(){
-                                getQuerystring();
-                            };
-                            
-                            
-                    //europedataa= L.geoJSON(europedataa).addTo(map);
-                    var europedataa = L.geoJson(europedataa, {onEachFeature: forEachFeature_countries, style: style_countries}).addTo(map);
+    /*===================================================
+                        LEGEND             
+    ===================================================*/
+    var legend = L.control({position: 'bottomright'});
+    legend.onAdd = function (map) {
 
-                                       
-                    //Layer control
-                    var baseLayers = {
-                        "Satellite":googleSat,
-                        "OpenStreetMap": osm,
-                    };
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 5, 10, 25, 50, 100, 300, 600],
+        labels = [];
 
-                    L.control.layers(baseLayers).addTo(map);
-                    
-                    //var marker = L.marker([50.84673, 4.35247]).addTo(map);
-                    //var popup = marker.bindPopup('<b>Hello world!</b><br />I am a popup.');
-                    //popup.openPopup();
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
 
+    return div;
+    };
 
-                    function changeText(value) {
-                        var text = "";
+    legend.addTo(map);
 
-                        if (value == 1) text += "Austria";
-                        if (value == 2) text += "Belgium";
-                        if (value == 3) text += "Bulgaria";
-                        if (value == 4) text += "Croatia";             
-                        if (value == 5) text += "Cyprus";
-                        if (value == 6) text += "Czech Republic";
-                        if (value == 7) text += "Denmark";
-                        if (value == 8) text += "Estonia";
-                        if (value == 9) text += "Finland";
-                        if (value == 10) text += "France";
-                        if (value == 11) text += "Germany";
-                        if (value == 12) text += "Greece";
-                        if (value == 13) text += "Hungary";
-                        if (value == 14) text += "Ireland";
-                        if (value == 15) text += "Italy";
-                        if (value == 16) text += "Latvia";
-                        if (value == 17) text += "Lithuania";
-                        if (value == 18) text += "Luxembourg";
-                        if (value == 19) text += "Malta";
-                        if (value == 20) text += "Netherlands";
-                        if (value == 21) text += "Poland";
-                        if (value == 22) text += "Portugal";
-                        if (value == 23) text += "Romania";
-                        if (value == 24) text += "Slovakia";
-                        if (value == 25) text += "Slovenia";
-                        if (value == 26) text += "Spain";
-                        if (value == 27) text += "Sweden";
+    /*===================================================
+                        GET COUNTRY NAME BY FLAG            
+    ===================================================*/
 
-                        var country_name = document.getElementById("country_name").innerHTML=text;
-                        document.getElementById("country_name").value=text;
-                            }
-                            onload=function(){
-                                getQuerystring();
-                            };
-               </script>
-           </div>
-            
-        </div>
-    </body>
+    function changeText(value) {
+        var text = "";
 
-</html>
+        if (value == 1) text += "Austria";
+        if (value == 2) text += "Belgium";
+        if (value == 3) text += "Bulgaria";
+        if (value == 4) text += "Croatia";             
+        if (value == 5) text += "Cyprus";
+        if (value == 6) text += "Czech Republic";
+        if (value == 7) text += "Denmark";
+        if (value == 8) text += "Estonia";
+        if (value == 9) text += "Finland";
+        if (value == 10) text += "France";
+        if (value == 11) text += "Germany";
+        if (value == 12) text += "Greece";
+        if (value == 13) text += "Hungary";
+        if (value == 14) text += "Ireland";
+        if (value == 15) text += "Italy";
+        if (value == 16) text += "Latvia";
+        if (value == 17) text += "Lithuania";
+        if (value == 18) text += "Luxembourg";
+        if (value == 19) text += "Malta";
+        if (value == 20) text += "Netherlands";
+        if (value == 21) text += "Poland";
+        if (value == 22) text += "Portugal";
+        if (value == 23) text += "Romania";
+        if (value == 24) text += "Slovakia";
+        if (value == 25) text += "Slovenia";
+        if (value == 26) text += "Spain";
+        if (value == 27) text += "Sweden";
+
+        var country_name = document.getElementById("country_name").innerHTML=text;
+        document.getElementById("country_name").value=text;
+            }
+            onload=function(){
+                getQuerystring();
+            };
+</script>

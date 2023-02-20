@@ -3,6 +3,8 @@ import pandas as pd
 import os
 from sqlalchemy import create_engine, text
 import geopandas as gpd
+import psycopg2
+import json
 
 statics_folder = os.path.join('static')
 
@@ -13,23 +15,51 @@ app.config['UPLOAD_FOLDER'] = statics_folder
 
 #Connect to postgres SQL database
 def get_data(country_name):
-   username = "postgres"
-   password = "postgres"
-   host = "localhost"
-   port = 5432
-   database = "project"
+   # establishing the connection
+
+   DB_CONFIG = {
+      "database": "project",
+      "username": "postgres",
+      "password": "postgres",
+      "host": "localhost",
+      "port": "5432"}
+
+
+   username = DB_CONFIG['username']
+   password = DB_CONFIG['password']
+   host = DB_CONFIG['host']
+   port = DB_CONFIG['port']
+   database = DB_CONFIG['database']
 
    database_uri = f"postgresql://{username}:{password}@{host}:{port}/{database}"
    conn = database_uri
-   app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
    engine = create_engine(conn)
+   
 
-   with engine.begin() as connection: 
-      ctry = gpd.read_postgis(
-         sql=text(fr'SELECT geometry as geom, pop_density FROM eu_mergre WHERE NAME = {country_name}'),
-         con=connection,
-      )
-   return ctry
+   sql_query = f'''SELECT jsonb_build_object(
+    'type', 'FeatureCollection', 
+    'features', jsonb_agg(features.feature)
+   )
+   FROM ( 
+   SELECT jsonb_build_object(
+      'type',       'Feature',
+      'id',         id,
+      'geometry',   ST_AsGeoJSON(geometry)::jsonb,
+      'properties', to_jsonb(inputs) - 'id' - 'geometry' - 'country' - 'POP_DEN' -'District'
+   ) AS feature
+   FROM (SELECT   e.id, e.geometry, "NAME", "pop_density", "NAME_1"
+      FROM eu_merge as e
+      WHERE ("NAME" = '{country_name}')
+   ) inputs) features'''  
+
+   feature_collection_data = pd.read_sql_query(sql=text(sql_query), con=engine.connect())
+   feature_collection_dict_data = feature_collection_data.iloc[0]['jsonb_build_object']
+   population_feature_collection = json.dumps(feature_collection_dict_data)
+
+   return population_feature_collection
+
+
+
 
 
 @app.route('/', methods =["GET", "POST"]) 
@@ -37,15 +67,13 @@ def get_data(country_name):
 def gfg():
     if request.method == "POST": #if requesting method is post, we get the input data from HTML form
        # Getting the country name
-       country_name = request.form.get("con")
-       print(country_name)
+       country_name = request.form.get("country_name")
+       #print(country_name)       
        
-       
-       ctry=get_data(country_name)
+       population_json=get_data(country_name)
 
-       print('data recieved')
        #render the output html with the population density map
-       return render_template("output.html",ctry )
+       return render_template("output.html",country_name=country_name, statics_folder = statics_folder, population_json = population_json )
 
     else:
       #render the input page

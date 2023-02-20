@@ -7,9 +7,5 @@ flask
 SQLAlchemy
 psycopg2
 lxml
-<<<<<<< Updated upstream
 python-dotenv
 psycopg2-binary
-=======
-rasterio
->>>>>>> Stashed changes
