@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,flash
 import pandas as pd
 import os
 from sqlalchemy import create_engine, text
@@ -70,7 +70,7 @@ def get_data(country_name, data):
 
 @app.route('/', methods =["GET", "POST"]) 
 #importing flask and creating a home route which has both get and post methods
-def gfg():
+def pop():
     if request.method == "POST": #if requesting method is post, we get the input data from HTML form
        # Getting the country name
        country_name = request.form.get("country_name")
@@ -78,8 +78,11 @@ def gfg():
        data=read_config('config.yml')
        population_json=get_data(country_name, data)
 
-       #render the output html with the population density map
-       return render_template("output.html",country_name=country_name, static_folder = static_folder, population_json = population_json)
+       if country_name == "":
+         return render_template("input.html", static_folder = static_folder )
+       else:
+         #render the output html with the population density map
+         return render_template("output.html",country_name=country_name, static_folder = static_folder, population_json = population_json)
 
     else:
       #render the input page
