@@ -16,7 +16,7 @@
 
 1. Clone the repository from Github environment to your working directory
 2. Create a working environment and install the required libraries listed in requirements.txt
-3. Create a database named project in PgAdmin (PostgreSQL) and enable the postgis extension
+3. Create a database named project in PgAdmin (PostgreSQL) and enable the postgis extension (create extension postgis)
 4. Update the configuration.yml with the user name and password of the postgres server
-5. Execute the ............py to create data tables in Population_density database
+5. Execute the population.py to create data tables in the database
 6. Execute main.py
