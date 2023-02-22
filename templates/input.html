@@ -73,6 +73,10 @@
             </form>
         </div></h3>
 
+        {% if error %}  
+        <p style="color:red;"><strong>Error</strong>: {{error}}</p>  
+        {% endif %} 
+
         <div id="whole page">
             <div id="leftSide" style="float:left; width:28%;">
                 <h3>Select the country by National flag</h3>           

@@ -11,6 +11,8 @@ static_folder = os.path.join('static')
 
 #create Flask application
 app = Flask(__name__)
+app.secret_key = "abc" 
+
 app.config['UPLOAD_FOLDER'] = static_folder
 
 def read_config(fname: str) -> dict:
@@ -73,16 +75,18 @@ def get_data(country_name, data):
 def pop():
     if request.method == "POST": #if requesting method is post, we get the input data from HTML form
        # Getting the country name
+       error= None
        country_name = request.form.get("country_name")
               
-       data=read_config('config.yml')
-       population_json=get_data(country_name, data)
+       data=read_config('config.yml') #read .yml file to get pgadmin credentials
+       population_json=get_data(country_name, data) #query postgre to get data for the selected country
 
-       if country_name == "":
-         return render_template("input.html", static_folder = static_folder )
-       else:
-         #render the output html with the population density map
+       if country_name != "":
          return render_template("output.html",country_name=country_name, static_folder = static_folder, population_json = population_json)
+       
+       else:
+         error= "Please select a country!"
+         return render_template("input.html", static_folder = static_folder, error=error )
 
     else:
       #render the input page
