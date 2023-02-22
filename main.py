@@ -5,33 +5,42 @@ from sqlalchemy import create_engine, text
 import geopandas as gpd
 import psycopg2
 import json
+import yaml
 
-statics_folder = os.path.join('static')
+static_folder = os.path.join('static')
 
 #create Flask application
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = statics_folder
+app.config['UPLOAD_FOLDER'] = static_folder
+
+def read_config(fname: str) -> dict:
+   """ Reads the configuration file
+
+   Args:
+      fname (str): the configuration file
+
+   Returns:
+      dict: a dictionary with the configuration
+   """
+   try:
+      with open(fname) as f:
+            data = yaml.load(f, Loader=yaml.FullLoader)
+   except yaml.YAMLError as err:
+      print(err)
+   return data
 
 
 #Connect to postgres SQL database
-def get_data(country_name):
+def get_data(country_name, data):
    # establishing the connection
 
-   DB_CONFIG = {
-      "database": "project",
-      "username": "postgres",
-      "password": "postgres",
-      "host": "localhost",
-      "port": "5432"}
+   user= data['username']
+   password = data['password']
+   host = data['host']
+   port = data['port']
+   database = data['database']
 
-
-   username = DB_CONFIG['username']
-   password = DB_CONFIG['password']
-   host = DB_CONFIG['host']
-   port = DB_CONFIG['port']
-   database = DB_CONFIG['database']
-
-   database_uri = f"postgresql://{username}:{password}@{host}:{port}/{database}"
+   database_uri = f"postgresql://{user}:{password}@{host}:{port}/{database}"
    conn = database_uri
    engine = create_engine(conn)
    
@@ -59,26 +68,22 @@ def get_data(country_name):
    return population_feature_collection
 
 
-
-
-
 @app.route('/', methods =["GET", "POST"]) 
 #importing flask and creating a home route which has both get and post methods
 def gfg():
     if request.method == "POST": #if requesting method is post, we get the input data from HTML form
        # Getting the country name
        country_name = request.form.get("country_name")
-       #print(country_name)       
-       
-       population_json=get_data(country_name)
+              
+       data=read_config('config.yml')
+       population_json=get_data(country_name, data)
 
        #render the output html with the population density map
-       return render_template("output.html",country_name=country_name, statics_folder = statics_folder, population_json = population_json )
+       return render_template("output.html",country_name=country_name, static_folder = static_folder, population_json = population_json)
 
     else:
       #render the input page
-      return render_template("input.html", statics_folder = statics_folder )
-
+      return render_template("input.html", static_folder = static_folder)
 
 
 if __name__=='__main__':

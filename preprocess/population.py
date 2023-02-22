@@ -5,19 +5,36 @@ from sqlalchemy import create_engine
 from pyproj import CRS, Proj, transform
 import psycopg2
 import os
+import yaml
 
-from dotenv import load_dotenv
-load_dotenv()
 
-user = "postgres"
-password = "postgres"
-host = "localhost"
-port = 5432
-database = "project"
+def read_config(fname: str) -> dict:
+    """ Reads the configuration file
+
+    Args:
+        fname (str): the configuration file
+
+    Returns:
+        dict: a dictionary with the configuration
+    """
+    try:
+        with open(fname) as f:
+            data = yaml.load(f, Loader=yaml.FullLoader)
+    except yaml.YAMLError as err:
+        print(err)
+    return data
+
+data=read_config('config.yml')
+
+user= data['username']
+password = data['password']
+host = data['host']
+port = data['port']
+database = data['database']
+
 
 # Set paths for working and data directories
 cw = os.getcwd()
-print(cw)
 data_location = os.path.join(cw,'static','data')
 
 

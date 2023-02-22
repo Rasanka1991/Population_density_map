@@ -15,6 +15,11 @@
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
 
+        <script src="{{statics_folder}}/src/leaflet.ajax.min.js"></script>
+
+        <script src="{{statics_folder}}/data/europe.js"></script>
+        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
 
         <style>
             .table1{
@@ -53,6 +58,11 @@
                 border-bottom: 1px solid #dddd;
             }
     
+            #map{
+                height: 100vh;
+                width: 100%;
+            }
+    
             .info {     
                 padding: 6px 8px;
                 font: 14px/16px Arial, Helvetica, sans-serif;
@@ -85,16 +95,16 @@
     
 
     <body> 
-        <h1><center>Population Density maps of Countries in European Union</center></h1>
+        <h1><center><i>Population Density map of <var id="display_name"></var></i></center></h1>
         <h3>
-        <div id = form>
+        <div id = form> 
             <form action="{{ url_for("gfg")}}" method="post">
                 <label for="country">The selected country is :</label>
                 <input type="text" id="country_name" name="country_name" placeholder="country">
                 <button type="submit">Submit</button>
             </form>
         </div></h3>
-
+        
         <div id="whole page">
             <div id="leftSide" style="float:left; width:28%;">
                 <h3>Select the country by National flag</h3>           
@@ -210,7 +220,6 @@
             </div>
 
             <div id="rightSide" style="float:right; width:72%;">
-            <h3>Select the country from the map</h3> 
 
             <!-- Map element --> 
             <div id="map" style="width: 1050px; height: 550px;"></div>
@@ -223,7 +232,6 @@
             
             
 <script type="text/javascript">
-
     /*===================================================
                 ADD OSM AND SATELLITE TILE LAYERS              
     ===================================================*/
@@ -248,7 +256,8 @@
     
     //GET COLOR ACCORDING TO THE POPULATION
     function getColor(d) {
-        return d > 600 ? '#800026' :
+        return d >800 ? '#67000d':
+            d > 600 ? '#800026' :
             d > 300  ? '#BD0026' :
             d > 100  ? '#E31A1C' :
             d > 50  ? '#FC4E2A' :
@@ -300,7 +309,6 @@
         "Satellite":googleSat,
         "OpenStreetMap": osm,
     };
-
     L.control.layers(baseLayers).addTo(map);
     
     /*===================================================
@@ -316,7 +324,7 @@
     // method that we will use to update the control based on feature properties passed
     info.update = function (props) {
         this._div.innerHTML = '<h4>Population Density</h4>' +  (props ?
-            '<b>' + props.NAME + '</b><br />' + props.NAME_1 + '<br />' + Math.ceil(props.pop_density) + ' persons / km<sup>2</sup>'
+            '<b>' + props.NAME + '</b><br />' + props.NAME_1 + '<br />' + Math.ceil(props.pop_density) + ' people / km<sup>2</sup>'
             : 'Click over a region');
     };
 
@@ -329,7 +337,7 @@
     legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 5, 10, 25, 50, 100, 300, 600],
+        grades = [0, 5, 10, 25, 50, 100, 300, 600, 800],
         labels = [];
 
     // loop through our density intervals and generate a label with a colored square for each interval
@@ -385,4 +393,8 @@
             onload=function(){
                 getQuerystring();
             };
+
+        var display_name ='{{country_name|safe}}';
+        var display_name= document.getElementById("display_name").innerHTML= display_name;
+    
 </script>
