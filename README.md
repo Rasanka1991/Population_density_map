@@ -1,4 +1,4 @@
-<h1 align="center"><b>Population density mapper for countries in Europe </b></h1>
+<h1 align="center"><b>Population density mapper for countries in the Europian union </b></h1>
 
 ![alt text](/static/images/cover.png)
 
