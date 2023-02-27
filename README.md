@@ -1,6 +1,6 @@
 <h1 align="center"><b>Population density mapper for countries in Europe </b></h1>
 
-![alt text](/static/images/front.png)
+![alt text](/static/images/cover.png)
 
 ## Introduction
 
