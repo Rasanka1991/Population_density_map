@@ -1,22 +1,27 @@
-# NOVA IMS Group Project- Master of science in Geospatial Technologies
-### A group project by Rasanka De Silva, Fransisco Boieiro and Romarick Tewiy
+<h1 align="center"><b>Population density mapper for countries in Europe </b></h1>
 
-### This git hub repository is still under construction, it is intending to develop a code using python programing language to read a database from a postgressql data base.
+![alt text](/static/images/front.png)
 
-## The conceptual work flow of the project is as follows,
+## Introduction
 
-1. Click on top of the country flag or select the country of interest using the dispalyed map in the html page
-2. Collect the clicked country name and pass to the main.py
-3. Search the database to obtain the population and boundary information of the selected country
-4. Pass the data to the pop_density_map_v3.py to calculate the population density and obtain the raster to display
-5. Get the output map from  pop_density_map_v3.py to the main.py
-6. Display the population density raster using HTML Map
+Population density is the average number of people per unit, usually miles or kilometers, of land area. Understanding and mapping population density is important. Experts can use this information to inform decisions around resource allocation, natural disaster relief, and new infrastructure projects. The objective of this web application is to provide the user with information on population density for any country pick on the map. 
 
-## Steps to followed to work on a local directory
+## Data and Method
 
-1. Clone the repository from Github environment to your working directory
-2. Create a working environment and install the required libraries listed in requirements.txt
-3. Create a database named project in PgAdmin (PostgreSQL) and enable the postgis extension (create extension postgis)
-4. Update the configuration.yml with the user name and password of the postgres server
-5. Execute the population.py to create data tables in the database
-6. Execute main.py
+Population statistics downloaded from the [city population](https://www.citypopulation.de/) data portal and the administrative boundary information retrieved from the [DIVA-GIS](http://www.diva-gis.org/Data) data portal were used as the main data source for the project to calculate the population density of selected 27 countries of the European Union.
+
+
+## Running on your local environment
+To run the app locally, the following requirements are necessary:
+* Python 3.x
+* Postgres SQL database with enabled PostGIS extension 
+* Install packages listed in the requirements.txt file
+
+``` conda install requirements.txt -c conda forge ```
+
+
+Then clone the repository in to your local working environment and update the configuration.yml with your own database name, user name and password of the postgres server. Finally, run the file “main.py” and open the application locally in the browser.
+
+
+## Disclaimer
+This project was done within the GPS group project class of the Master in Geospatial Technologies (Winter term 2022/2023) of the NOVA Information Management School of Lisbon by the students Rasanka De Silva, Fransisco Boieiro and Romarick Tewiy. This is therefore an educational exercise that would need further proofing in case the app were to be launched into the general public.
