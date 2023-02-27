@@ -8,7 +8,19 @@ Population density is the average number of people per unit, usually miles or ki
 
 ## Data and Method
 
+### Data used
+
 Population statistics downloaded from the [city population](https://www.citypopulation.de/) data portal and the administrative boundary information retrieved from the [DIVA-GIS](http://www.diva-gis.org/Data) data portal were used as the main data source for the project to calculate the population density of selected 27 countries of the European Union.
+
+### Method
+
+The application has been structured into two separate blocks as the backend built in Python and the frontend built with JavaScript and HTML. In the backend consisting two scripts as the population.py module is stored in the elt folder and main.py. population.py modules works to read the shapefile in the data folder, calculate the population densities in the regions and finally save the data to the PostGIS database and The Flask application built in main.py gets the user input from the frontend to request the population densities of the regions in the selected country and send the resulting geojson files to the final display.  
+
+The frontend is structured in two HTML files, the "input.html" for the first interaction with the user to get the country via the respective flag or by clicking on the map to display the population densities and the "output.html" to display the retrieved data in the map.
+
+The diagram below shows the project structure
+
+![structure](/static/images/structure.png)
 
 
 ## Running on your local environment
