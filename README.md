@@ -20,7 +20,7 @@ The frontend is structured in two HTML files, the "input.html" for the first int
 
 The diagram below shows the project structure
 
-![structure](/static/images/structure.png)
+![structure](/static/images/structure.jpg)
 
 
 ## Running on your local environment
