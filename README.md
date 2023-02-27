@@ -32,7 +32,7 @@ To run the app locally, the following requirements are necessary:
 ``` conda install requirements.txt -c conda forge ```
 
 
-Then clone the repository in to your local working environment and update the configuration.yml with your own database name, user name and password of the postgres server. Finally, run the file “main.py” and open the application locally in the browser.
+Then clone the repository in to your local working environment and update the configuration.yml with your own database name, user name and password of the postgres server. then execute the population.py to store the data into the PostGIS database. Finally, run the file “main.py” and open the application locally in the browser.
 
 
 ## Disclaimer
