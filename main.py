@@ -46,7 +46,7 @@ def get_data(country_name, data):
    conn = database_uri
    engine = create_engine(conn)
    
-
+#Getting the data for selected country
    sql_query = f'''SELECT jsonb_build_object(
     'type', 'FeatureCollection', 
     'features', jsonb_agg(features.feature)
